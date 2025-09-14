@@ -4,8 +4,20 @@ const API_URL =
   'https://mate-academy.github.io/react_dynamic-list-of-goods/goods.json';
 
 // завантажує всі товари
-export function getAll(): Promise<Good[]> {
-  return fetch(API_URL).then(response => response.json());
+export async function getAll(): Promise<Good[]> {
+  try {
+    const res = await fetch(API_URL);
+
+    if (!res.ok) {
+      throw new Error(
+        `Failed to fetch goods: ${res.status} ${res.statusText}`
+      );
+    }
+
+    return await res.json();
+  } catch (err) {
+    throw new Error('Network error while fetching goods');
+  }
 }
 
 // завантажує перші 5 (відсортовані за назвою)
